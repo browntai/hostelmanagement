@@ -1,0 +1,10 @@
+{
+    "name": "browntai/hostelmanagement",
+    "description": "Hostel Management System PHP",
+    "require": {
+        "php": ">=7.4",
+        "ext-mysqli": "*",
+        "ext-pdo_mysql": "*",
+        "ext-gd": "*"
+    }
+}
