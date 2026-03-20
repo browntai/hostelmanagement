@@ -1,0 +1,14 @@
+# Dependencies
+/node_modules
+/vendor
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Environments
+.env
+
+# XAMPP/Local stuff
+/tmp
+/upload
