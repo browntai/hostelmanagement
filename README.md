@@ -11,6 +11,9 @@ A full-featured **multi-tenant property rental marketplace** built with PHP, MyS
 - **Hostel Details** — Photo gallery, amenity list, room availability, and reviews
 - **Wishlist** — Save favourite hostels (requires login)
 - **Client Registration** — Self-service sign-up with automatic login
+- **AJAX Navigation** — Smooth, fast page transitions without full reloads
+- **Interactive DataTables** — Searchable, sortable lists for management pages (Rooms, Clients, Users)
+- **Daycare Toggle** — Global service control for childcare facilities per property
 
 ### Client Dashboard
 - Personalised welcome with booking stats (status, room, payments, available hostels)
@@ -43,10 +46,11 @@ A full-featured **multi-tenant property rental marketplace** built with PHP, MyS
 
 ### System-Wide
 - **Multi-Tenancy** — Each landlord (tenant) sees only their own data
-- **Sapphire Veil Theme** — Premium dark UI with glassmorphism, 70 % opacity blur, and high-contrast badges
-- **Role-Based Access** — `super_admin`, `landlord`, `client`
+- **Premium Sapphire Veil Theme** — Modern dark UI with glassmorphism, 70% opacity blur, and high-contrast dynamic badges
+- **AJAX-Powered Core** — Enhanced user experience with dynamic content loading
+- **Role-Based Access** — `super_admin`, `landlord`, `caretaker`, `client/tenant`
 - **Profile Pictures** — Upload and display across header navigation
-- **Responsive Design** — Mobile-friendly layouts
+- **Responsive Design** — Mobile-friendly layouts with modern typography
 
 ---
 
@@ -97,9 +101,10 @@ A full-featured **multi-tenant property rental marketplace** built with PHP, MyS
 
 | Role | Email | Password |
 |------|-------|----------|
-| Super Admin | `super@hostel.com` | `Test@12345` |
-| Landlord (Tenant Admin) | `admin@mail.com` | `Test@123` |
-| Client | `ross@mail.com` | `123456` |
+| Super Admin | `admin@mail.com` | `admin123` |
+| Landlord | `thomas@gmail.com` | `Brown@123` |
+| Caretaker | `caretaker@gmail.com` | `admin123` |
+| Tenant (Client) | `stark@gmail.com` | `Brown@123` |
 
 > [!NOTE]
 > Passwords are stored as MD5 hashes (legacy). For production, migrate to `password_hash()`.
