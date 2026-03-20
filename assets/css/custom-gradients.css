@@ -1,0 +1,460 @@
+/* Custom Gradients - Hostel Management System
+   Theme: Real Estate Brand Green (#17c788)
+   Adapted from public-pages.css color palette */
+
+@import url('https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600;700;800&family=Comfortaa:wght@400;500;600;700&display=swap');
+
+:root {
+    --gradient-primary: linear-gradient(135deg, #129d6b 0%, #17c788 100%);
+    --gradient-success: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+    --gradient-danger: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
+    --gradient-warning: linear-gradient(135deg, #f7b733 0%, #fc4a1a 100%);
+    --gradient-info: linear-gradient(135deg, #36D1DC 0%, #5B86E5 100%);
+    --gradient-brand-1: linear-gradient(135deg, #0d7f55 0%, #129d6b 100%);
+    --gradient-brand-2: linear-gradient(135deg, #129d6b 0%, #17c788 100%);
+    --gradient-brand-3: linear-gradient(135deg, #17c788 0%, #1ee09e 100%);
+    --gradient-brand-4: linear-gradient(135deg, #1ee09e 0%, #46f5b9 100%);
+    --sidebar-gradient: linear-gradient(180deg, #0d1432 0%, #162040 100%);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.bg-brand-1 { background: var(--gradient-brand-1) !important; color: white !important; border: none !important; }
+.bg-brand-2 { background: var(--gradient-brand-2) !important; color: white !important; border: none !important; }
+.bg-brand-3 { background: var(--gradient-brand-3) !important; color: white !important; border: none !important; }
+.bg-brand-4 { background: var(--gradient-brand-4) !important; color: white !important; border: none !important; }
+
+/* ── Typography Override ── */
+body {
+    font-family: 'Muli', sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6,
+.page-title,
+.card-title,
+.sidebar-nav .nav-small-cap {
+    font-family: 'Comfortaa', cursive !important;
+}
+
+/* 1. Buttons & Backgrounds */
+.btn-primary,
+.bg-primary,
+.btn-primary:focus {
+    background: var(--gradient-primary) !important;
+    border: none !important;
+    color: white !important;
+}
+
+.btn-success,
+.bg-success,
+.btn-success:focus {
+    background: var(--gradient-success) !important;
+    border: none !important;
+    color: white !important;
+}
+
+.btn-danger,
+.bg-danger,
+.btn-danger:focus {
+    background: var(--gradient-danger) !important;
+    border: none !important;
+    color: white !important;
+}
+
+.btn-warning,
+.bg-warning,
+.btn-warning:focus {
+    background: var(--gradient-warning) !important;
+    border: none !important;
+    color: white !important;
+}
+
+.btn-info,
+.bg-info,
+.btn-info:focus {
+    background: var(--gradient-info) !important;
+    border: none !important;
+    color: white !important;
+}
+
+/* Button Transitions */
+.btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn:hover {
+    filter: brightness(1.1);
+    box-shadow: var(--shadow-md) !important;
+    transform: translateY(-1px);
+}
+
+/* 2. Sidebar Styling — White BG + Green Text (matching public-pages.css) */
+.left-sidebar {
+    background: #ffffff !important;
+    border-right: 1px solid rgba(23, 199, 136, 0.15) !important;
+    box-shadow: 2px 0 8px rgba(13, 20, 50, 0.04);
+}
+
+.sidebar-nav ul .sidebar-item {
+    margin: 4px 12px;
+}
+
+.sidebar-nav ul .sidebar-item>.sidebar-link {
+    border-radius: 8px !important;
+    transition: all 0.3s ease;
+    color: #0d1432 !important;
+    font-weight: 500;
+}
+
+.sidebar-nav ul .sidebar-item>.sidebar-link i,
+.sidebar-nav ul .sidebar-item>.sidebar-link .feather-icon {
+    color: #74777b !important;
+}
+
+.sidebar-nav ul .sidebar-item.selected>.sidebar-link,
+.sidebar-nav ul .sidebar-item.active>.sidebar-link,
+.sidebar-nav ul .sidebar-item>.sidebar-link:hover {
+    background: #17c788 !important;
+    color: #ffffff !important;
+    opacity: 1;
+    box-shadow: 0 4px 10px rgba(23, 199, 136, 0.3);
+    transform: translateX(3px);
+}
+
+.sidebar-nav ul .sidebar-item.selected>.sidebar-link i,
+.sidebar-nav ul .sidebar-item.active>.sidebar-link i,
+.sidebar-nav ul .sidebar-item>.sidebar-link:hover i,
+.sidebar-nav ul .sidebar-item.selected>.sidebar-link .feather-icon,
+.sidebar-nav ul .sidebar-item.active>.sidebar-link .feather-icon,
+.sidebar-nav ul .sidebar-item>.sidebar-link:hover .feather-icon {
+    color: #ffffff !important;
+}
+
+/* Sidebar section labels */
+.sidebar-nav .nav-small-cap {
+    color: #17c788 !important;
+    text-transform: uppercase;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+}
+
+/* Sidebar divider */
+.sidebar-nav .list-divider {
+    border-color: rgba(23, 199, 136, 0.12) !important;
+}
+
+/* Sidebar badge */
+.sidebar-nav .badge {
+    background: #17c788 !important;
+}
+
+/* Sidebar scrollbar — light theme */
+.scroll-sidebar {
+    background: #ffffff !important;
+}
+
+.scroll-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(23, 199, 136, 0.15) !important;
+}
+
+/* 3. Dashboard Components */
+.card {
+    border: none !important;
+    border-radius: 15px !important;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+    transform: translateY(-5px);
+}
+
+/* Summary Cards (Dashboard) Icons */
+.card-body .ml-auto .opacity-7 {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: rgba(23, 199, 136, 0.1) !important;
+    color: #17c788 !important;
+    opacity: 1 !important;
+    transition: all 0.3s ease;
+}
+
+.card:hover .card-body .ml-auto .opacity-7 {
+    transform: scale(1.1);
+}
+
+.card-group .card:nth-child(1) .card-body .ml-auto .opacity-7 {
+    background: rgba(23, 199, 136, 0.12) !important;
+    color: #17c788 !important;
+}
+
+.card-group .card:nth-child(2) .card-body .ml-auto .opacity-7 {
+    background: rgba(23, 199, 136, 0.12) !important;
+    color: #129d6b !important;
+}
+
+.card-group .card:nth-child(3) .card-body .ml-auto .opacity-7 {
+    background: rgba(255, 79, 112, 0.12) !important;
+    color: #ff4f70 !important;
+}
+
+.card-group .card:nth-child(4) .card-body .ml-auto .opacity-7 {
+    background: rgba(253, 193, 106, 0.12) !important;
+    color: #fdc16a !important;
+}
+
+/* Dashboard Summary Numbers */
+.card-body h2 {
+    font-size: 1.8rem;
+    letter-spacing: -0.02em;
+}
+
+/* Profile Card Gradient Override */
+.bg-gradient-primary,
+.card-body.bg-gradient-primary {
+    background: var(--gradient-primary) !important;
+    color: white;
+}
+
+.bg-gradient-brand {
+    background: var(--gradient-primary) !important;
+}
+
+/* 4. Table Styling */
+.table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.table tr {
+    box-shadow: none;
+    transition: all 0.2s ease;
+}
+
+.table tbody tr {
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa !important;
+    transform: scale(1.002);
+}
+
+.table td,
+.table th {
+    border: none !important;
+    padding: 1.2rem 1rem !important;
+    vertical-align: middle;
+}
+
+.table thead th {
+    background: transparent !important;
+    color: #4b5563 !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding-bottom: 0.5rem !important;
+}
+
+/* 5. Navigation Bar */
+.topbar {
+    background: #fff !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.03) !important;
+}
+
+.topbar .navbar-brand {
+    border-right: 1px solid #f3f4f6;
+}
+
+/* User Dropdown */
+.user-dd {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 10px !important;
+}
+
+.user-dd .dropdown-item {
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin: 2px 0;
+    transition: all 0.2s ease;
+}
+
+.user-dd .dropdown-item:hover {
+    background: rgba(23, 199, 136, 0.08) !important;
+    color: #17c788 !important;
+}
+
+/* 6. Badges */
+.badge {
+    padding: 5px 10px;
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+.badge-primary {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+}
+
+.badge-success {
+    background: var(--gradient-success) !important;
+    color: white !important;
+}
+
+.badge-danger {
+    background: var(--gradient-danger) !important;
+    color: white !important;
+}
+
+.badge-warning {
+    background: var(--gradient-warning) !important;
+    color: white !important;
+}
+
+.badge-info {
+    background: var(--gradient-info) !important;
+    color: white !important;
+}
+
+/* 7. Modal Headers */
+.modal-header.bg-primary {
+    background: var(--gradient-primary) !important;
+}
+
+/* 8. Modern File Input */
+input[type="file"] {
+    background: #f9fafb;
+    border: 2px dashed #e5e7eb;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+/* Custom Scrollbar for Sidebar */
+.scroll-sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.scroll-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(23, 199, 136, 0.2);
+    border-radius: 10px;
+}
+
+/* 9. Links and Accent Colors */
+a {
+    color: #17c788;
+}
+
+a:hover {
+    color: #129d6b;
+}
+
+/* Breadcrumb */
+.breadcrumb-item a {
+    color: #17c788 !important;
+}
+
+/* Page Title */
+.page-title {
+    color: #0d1432 !important;
+}
+
+/* 10. Notification Badge */
+.badge.notify-no {
+    background: #17c788 !important;
+}
+
+/* 11. Outline Buttons - Updated to Brand Green */
+.btn-outline-primary {
+    color: #17c788 !important;
+    border-color: #17c788 !important;
+    background: transparent !important;
+}
+
+.btn-outline-primary:hover {
+    background: var(--gradient-primary) !important;
+    color: #fff !important;
+    border-color: #17c788 !important;
+}
+
+/* 12. Text Colors Override */
+.text-primary {
+    color: #17c788 !important;
+}
+
+/* 13. Countdown Widget */
+.countdown-number {
+    color: #17c788 !important;
+}
+
+.border-primary {
+    border-color: #17c788 !important;
+}
+
+/* 14. Booking Status Badges */
+.badge-status-confirmed {
+    background: var(--gradient-primary) !important;
+    color: #fff !important;
+}
+
+.badge-status-approved {
+    background: var(--gradient-success) !important;
+    color: #fff !important;
+}
+
+.badge-status-pending {
+    background: var(--gradient-warning) !important;
+    color: #fff !important;
+}
+
+.badge-status-rejected {
+    background: var(--gradient-danger) !important;
+    color: #fff !important;
+}
+
+.badge-status-cancelled {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%) !important;
+    color: #fff !important;
+}
+
+.badge-status-default {
+    background: linear-gradient(135deg, #adb5bd 0%, #6c757d 100%) !important;
+    color: #fff !important;
+}
+
+/* 15. Selection color */
+::selection {
+    background: #17c788;
+    color: #fff;
+}
+
+/* 16. Form Focus States */
+.form-control:focus {
+    border-color: #17c788 !important;
+    box-shadow: 0 0 0 3px rgba(23, 199, 136, 0.12) !important;
+}
+
+/* 17. Preloader */
+.preloader {
+    background: #0d1432;
+}
+
+.lds-ripple .lds-pos {
+    border-color: #17c788 !important;
+}
+
+/* 18. Card Header Gradient */
+.card-header.bg-gradient-brand {
+    background: var(--gradient-primary) !important;
+}
