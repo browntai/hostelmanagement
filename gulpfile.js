@@ -3,7 +3,7 @@ const gulp = require('gulp'),
     minifyCSS = require('gulp-minify-css'),
     uglify = require('gulp-uglify'),
     rename = require("gulp-rename"),
-    sass = require('gulp-sass'),
+    sass = require('gulp-sass')(require('sass')),
     npmDist = require('gulp-npm-dist'),
     browserSync = require('browser-sync').create();
 
