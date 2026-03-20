@@ -101,7 +101,7 @@ A full-featured **multi-tenant property rental marketplace** built with PHP, MyS
 
 | Role | Email | Password |
 |------|-------|----------|
-| Super Admin | `admin@mail.com` | `admin123` |
+| Super Admin | `tracy@mail.com` | `Brown@123` |
 | Landlord | `thomas@gmail.com` | `Brown@123` |
 | Caretaker | `caretaker@gmail.com` | `admin123` |
 | Tenant (Client) | `stark@gmail.com` | `Brown@123` |
