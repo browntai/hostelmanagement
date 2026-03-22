@@ -25,18 +25,19 @@ function check_login()
             
             if(!$mysqli) include('dbconn.php');
 
-            // Check user status and role
-            $stmt = $mysqli->prepare("SELECT status, role FROM users WHERE id = ?");
+            // Check user status, role, and profile completeness
+            $stmt = $mysqli->prepare("SELECT status, role, profile_pic, contact_no FROM users WHERE id = ?");
             $stmt->bind_param('i', $_SESSION['id']);
             $stmt->execute();
-            $stmt->bind_result($u_status, $u_role);
+            $stmt->bind_result($u_status, $u_role, $u_pic, $u_contact);
             $stmt->fetch();
             $stmt->close();
 
-            // Sync role if changed
-            if ($u_role && $_SESSION['role'] !== $u_role) {
-                $_SESSION['role'] = $u_role;
-            }
+            // Sync role and store profile status
+            if ($u_role) $_SESSION['role'] = $u_role;
+            $_SESSION['profile_pic'] = $u_pic;
+            $_SESSION['contact_no'] = $u_contact;
+            $_SESSION['is_profile_complete'] = (!empty($u_pic) && !empty($u_contact));
 
             // Check tenant status
             $stmt = $mysqli->prepare("SELECT status FROM tenants WHERE id = ?");

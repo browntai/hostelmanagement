@@ -45,27 +45,6 @@
     $tm = new TenantManager($mysqli);
     $tenantId = $tm->getCurrentTenantId();
 
-    // 1. Get Room Capacity
-    $roomQuery = "SELECT seater FROM rooms WHERE room_no=? AND tenant_id=?";
-    $roomStmt = $mysqli->prepare($roomQuery);
-    $roomStmt->bind_param('ii', $roomno, $tenantId);
-    $roomStmt->execute();
-    $roomStmt->bind_result($capacity);
-    $roomExists = $roomStmt->fetch();
-    $roomStmt->close();
-
-    if (!$roomExists) {
-        echo "<span style='color:red'>Room not found.</span>";
-    } else {
-        // 2. Count Current Bookings
-        $countQuery = "SELECT count(*) FROM bookings WHERE roomno=? AND tenant_id=?";
-        $countStmt = $mysqli->prepare($countQuery);
-        $countStmt->bind_param('ii', $roomno, $tenantId);
-        $countStmt->execute();
-        $countStmt->bind_result($currentCount);
-        $countStmt->fetch();
-        $countStmt->close();
-
     // 1. Get Room Capacity and Status
     $roomQuery = "SELECT seater, status FROM rooms WHERE room_no=? AND tenant_id=?";
     $roomStmt = $mysqli->prepare($roomQuery);
@@ -93,7 +72,6 @@
         } else {
             echo "<span style='color:green'>Room is available. Capacity: $capacity</span>";
         }
-    }
     }
     }
 ?>

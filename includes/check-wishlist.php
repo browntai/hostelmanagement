@@ -12,7 +12,7 @@ if(!isset($_SESSION['id']) || !isset($_GET['hostel_id'])) {
 $client_id = $_SESSION['id'];
 $hostel_id = intval($_GET['hostel_id']);
 
-$query = "SELECT id FROM wishlist WHERE student_id = ? AND hostel_id = ?";
+$query = "SELECT id FROM wishlist WHERE client_id = ? AND hostel_id = ?";
 $stmt = $mysqli->prepare($query);
 $stmt->bind_param('ii', $client_id, $hostel_id);
 $stmt->execute();

@@ -494,5 +494,6 @@
     
     <script src="../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../dist/js/pages/datatable/datatable-basic.init.js"></script>
+    <?php $profileLink = 'profile.php'; include '../includes/profile-reminder-modal.php'; ?>
 </body>
 </html>

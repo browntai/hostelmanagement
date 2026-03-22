@@ -43,7 +43,7 @@ function getOccupancyStats($mysqli, $tenantId = null) {
     $totalRooms = $rowTotal['total'];
     
     // Booked Rooms (Occupied)
-    $sqlBooked = "SELECT COUNT(DISTINCT roomno) as occupied FROM bookings WHERE booking_status = 'approved'";
+    $sqlBooked = "SELECT COUNT(DISTINCT id) as occupied FROM rooms WHERE (status = 'booked' OR (room_no, hostel_id) IN (SELECT roomno, hostel_id FROM bookings WHERE booking_status IN ('approved', 'pending')))";
     if ($tenantId !== null) {
         $sqlBooked .= " AND tenant_id = $tenantId";
     }

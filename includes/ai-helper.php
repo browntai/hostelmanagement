@@ -405,7 +405,7 @@ function getPredictiveInsights($mysqli, $tenantId) {
  * Replace YOUR_GEMINI_API_KEY below with your actual Google AI API key.
  * Get one from: https://aistudio.google.com/app/apikey
  */
-define('GEMINI_API_KEY', 'AIzaSyA8jJALq8AIhe_BZoZ5b53QtAdE_6EL340');
+define('GEMINI_API_KEY', getenv('GEMINI_API_KEY') ?: '[GCP_API_KEY]');
 define('GEMINI_MODEL',   'gemini-2.0-flash');
 
 function getChatbotResponse($question) {

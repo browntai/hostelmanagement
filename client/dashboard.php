@@ -485,5 +485,6 @@
     </script>
     <?php endif; ?>
     <?php include '../includes/chatbot-widget.php'; ?>
+    <?php $profileLink = 'profile.php'; include '../includes/profile-reminder-modal.php'; ?>
 </body>
 </html>

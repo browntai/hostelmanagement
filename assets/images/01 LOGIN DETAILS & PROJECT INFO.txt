@@ -9,7 +9,7 @@
 
 **Admin Login Details**
 
-Email: [EMAIL_ADDRESS]
+Email: tracy@mail.com
 password: [admin123]
 role: admin
 
@@ -24,3 +24,7 @@ role: caretaker
 Email: [stark@gmail.com]
 password: [Brown@123]
 role: tenant
+
+Email: [nancy@gmail.com]
+password: [Brown@123]
+role: landlord

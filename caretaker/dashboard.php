@@ -311,5 +311,6 @@
     <script src="../assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
     <script src="../dist/js/sidebarmenu.js"></script>
     <script src="../dist/js/custom.min.js"></script>
+    <?php $profileLink = 'profile.php'; include '../includes/profile-reminder-modal.php'; ?>
 </body>
 </html>

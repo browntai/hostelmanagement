@@ -39,21 +39,31 @@ if (!$canView) {
     $amenities = getHostelAmenities($mysqli, $hostel_id);
     $types = getHostelTypes($mysqli, $hostel_id);
     $available_rooms = getAvailableRoomsCount($mysqli, $hostel_id);
+
+    // Get caretaker contact (public) — prefer caretaker assigned to this specific hostel
+    $caretaker = null;
+    $ct_stmt = $mysqli->prepare("SELECT full_name, contact_no, email FROM users WHERE role = 'caretaker' AND assigned_hostel_id = ? LIMIT 1");
+    $ct_stmt->bind_param('i', $hostel_id);
+    $ct_stmt->execute();
+    $ct_result = $ct_stmt->get_result();
+    if ($ct_result->num_rows > 0) {
+        $caretaker = $ct_result->fetch_object();
+    } else {
+        // Fallback: any caretaker under the same tenant
+        $ct_stmt2 = $mysqli->prepare("SELECT full_name, contact_no, email FROM users WHERE role = 'caretaker' AND tenant_id = ? LIMIT 1");
+        $ct_stmt2->bind_param('i', $hostel->tenant_id);
+        $ct_stmt2->execute();
+        $ct_result2 = $ct_stmt2->get_result();
+        if ($ct_result2->num_rows > 0) {
+            $caretaker = $ct_result2->fetch_object();
+        }
+    }
 ?>
 
-<!DOCTYPE html>
-<html dir="ltr" lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<?php echo htmlentities($hostel->description); ?>">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
-    <title><?php echo htmlentities($hostel->name); ?> — HostelHub</title>
-    <link href="dist/css/style.min.css" rel="stylesheet">
-    <link href="assets/css/public-pages.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<?php 
+    $page_title = htmlentities($hostel->name) . " — HostelHub";
+    include('includes/public-header.php'); 
+?>
     
     <style>
         .detail-gallery {
@@ -209,32 +219,7 @@ if (!$canView) {
 
 <body class="pub-page">
 
-    <!-- ── Navigation ── -->
-    <nav class="pub-navbar scrolled" id="pubNav">
-        <div class="container">
-            <a class="pub-nav-brand" href="index.php">
-                <img src="assets/images/big/icon.png" alt="HostelHub">
-                <span>HostelHub</span>
-            </a>
-            <button class="pub-nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('show')">
-                <i class="fas fa-bars"></i>
-            </button>
-            <ul class="pub-nav-links" id="navLinks">
-                <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="gallery.php"><i class="fas fa-images"></i> Gallery</a></li>
-                <li><a href="about.php"><i class="fas fa-info-circle"></i> About</a></li>
-                <li><a href="contact.php"><i class="fas fa-envelope"></i> Contact</a></li>
-            </ul>
-            <div class="pub-nav-actions">
-                <a href="index.php" class="btn-pub-outline"><i class="fas fa-arrow-left"></i> Browse</a>
-                <?php if(isset($_SESSION['login'])): ?>
-                    <a href="client/dashboard.php" class="btn-pub-solid"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <?php else: ?>
-                    <a href="client-registration.php?hostel_id=<?php echo $hostel_id; ?>" class="btn-pub-solid">Register to Book</a>
-                <?php endif; ?>
-            </div>
-        </div>
-    </nav>
+    <?php include('includes/public-nav.php'); ?>
 
     <!-- ── Hero ── -->
     <?php 
@@ -398,21 +383,37 @@ if (!$canView) {
 
                     <div class="contact-box">
                         <h5><i class="fas fa-address-card" style="margin-right:6px;"></i> Contact Information</h5>
+
+                        <?php if($caretaker): ?>
+                            <p style="font-size:0.82rem; color:#8a9bb2; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; font-weight:600;">Caretaker</p>
+                            <p style="font-weight:600; color:var(--pub-navy); margin-bottom:8px;">
+                                <i class="fas fa-user-tie" style="color:var(--pub-blue); margin-right:6px;"></i><?php echo htmlentities($caretaker->full_name); ?>
+                            </p>
+                            <?php if($caretaker->contact_no): ?>
+                            <p><i class="fas fa-phone"></i> <?php echo htmlentities($caretaker->contact_no); ?></p>
+                            <?php endif; ?>
+                            <?php if($caretaker->email): ?>
+                            <p><i class="fas fa-envelope"></i> <?php echo htmlentities($caretaker->email); ?></p>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <p style="color:#8a9bb2; font-size:0.9rem;"><i class="fas fa-info-circle"></i> No caretaker assigned yet.</p>
+                        <?php endif; ?>
+
                         <?php if(isset($_SESSION['login'])): ?>
                             <?php 
                             $contact_no = isset($hostel->landlord_contact) ? $hostel->landlord_contact : $hostel->phone;
                             $email_addr = isset($hostel->landlord_email) ? $hostel->landlord_email : $hostel->email;
+                            if ($contact_no || $email_addr):
                             ?>
+                            <hr style="border-color:rgba(123,164,208,0.15); margin:12px 0;">
+                            <p style="font-size:0.82rem; color:#8a9bb2; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; font-weight:600;">Landlord</p>
                             <?php if($contact_no): ?>
                             <p><i class="fas fa-phone"></i> <?php echo htmlentities($contact_no); ?></p>
                             <?php endif; ?>
                             <?php if($email_addr): ?>
                             <p><i class="fas fa-envelope"></i> <?php echo htmlentities($email_addr); ?></p>
                             <?php endif; ?>
-                        <?php else: ?>
-                            <div style="background:rgba(217,119,6,0.08); border-radius:8px; padding:10px 14px; text-align:center;">
-                                <small style="color:#92400e;"><i class="fas fa-lock"></i> Login to view contact details</small>
-                            </div>
+                            <?php endif; ?>
                         <?php endif; ?>
                     </div>
 
@@ -433,63 +434,8 @@ if (!$canView) {
         <img id="lightbox-img" src="" alt="Full size">
     </div>
 
-    <!-- ── Footer ── -->
-    <footer class="pub-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="pub-footer-brand">
-                        <img src="assets/images/big/icon.png" alt="HostelHub">
-                        <span>HostelHub</span>
-                    </div>
-                    <p class="pub-footer-desc">Your trusted platform for finding quality hostel accommodations across Kenya.</p>
-                    <div class="pub-footer-social">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5>Quick Links</h5>
-                    <ul class="pub-footer-links">
-                        <li><a href="index.php">Browse Properties</a></li>
-                        <li><a href="gallery.php">Photo Gallery</a></li>
-                        <li><a href="about.php">About Us</a></li>
-                        <li><a href="contact.php">Contact</a></li>
-                        <li><a href="login.php">Login</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>For Property Owners</h5>
-                    <ul class="pub-footer-links">
-                        <li><a href="admin/index.php">Landlord Login</a></li>
-                        <li><a href="client-registration.php">Register Account</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>Legal</h5>
-                    <ul class="pub-footer-links">
-                        <li><a href="privacy.php">Privacy Policy</a></li>
-                        <li><a href="contact.php">Support</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="pub-footer-bottom">
-                &copy; <?php echo date('Y'); ?> HostelHub. All rights reserved.
-            </div>
-        </div>
-    </footer>
+<?php include('includes/public-footer.php'); ?>
 
-    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    
-    <script>
-        // Navbar scroll
-        window.addEventListener('scroll', function() {
-            const nav = document.getElementById('pubNav');
-            nav.classList.toggle('scrolled', window.scrollY > 50);
-        });
 
         function openLightbox(imageSrc) {
             document.getElementById('lightbox-img').src = imageSrc;

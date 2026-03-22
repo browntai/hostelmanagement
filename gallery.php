@@ -25,52 +25,14 @@
     $total_images = count($images);
 ?>
 
-<!DOCTYPE html>
-<html dir="ltr" lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Browse the photo gallery of all hostel properties. Like your favorite images and discover amazing accommodations.">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
-    <title>Photo Gallery — HostelHub</title>
-    <link href="dist/css/style.min.css" rel="stylesheet">
-    <link href="assets/css/public-pages.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
+<?php 
+    $page_title = "Photo Gallery — HostelHub";
+    include('includes/public-header.php'); 
+?>
 
 <body class="pub-page">
 
-    <!-- ── Navigation ── -->
-    <nav class="pub-navbar" id="pubNav">
-        <div class="container">
-            <a class="pub-nav-brand" href="index.php">
-                <img src="assets/images/big/icon.png" alt="HostelHub">
-                <span>HostelHub</span>
-            </a>
-
-            <button class="pub-nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('show')">
-                <i class="fas fa-bars"></i>
-            </button>
-
-            <ul class="pub-nav-links" id="navLinks">
-                <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="gallery.php" class="active"><i class="fas fa-images"></i> Gallery</a></li>
-                <li><a href="about.php"><i class="fas fa-info-circle"></i> About</a></li>
-                <li><a href="contact.php"><i class="fas fa-envelope"></i> Contact</a></li>
-            </ul>
-
-            <div class="pub-nav-actions">
-                <?php if(isset($_SESSION['login'])): ?>
-                    <a href="client/dashboard.php" class="btn-pub-solid"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <?php else: ?>
-                    <a href="login.php" class="btn-pub-outline">Login</a>
-                    <a href="client-registration.php" class="btn-pub-solid">Register</a>
-                <?php endif; ?>
-            </div>
-        </div>
-    </nav>
+    <?php include('includes/public-nav.php'); ?>
 
     <!-- ── Hero ── -->
     <section class="pub-hero pub-hero-small" style="background: linear-gradient(135deg, rgba(13, 20, 50, 0.8) 0%, rgba(13, 20, 50, 0.4) 100%), url('assets/images/heroes/gallery_hero.png') center/cover no-repeat;">
@@ -78,11 +40,16 @@
             <div class="pub-hero-content">
                 <h1><i class="fas fa-images" style="margin-right:12px; opacity:0.7;"></i>Photo Gallery</h1>
                 <p>Explore stunning photos from all our verified hostels. Like your favorites and discover amazing places to stay.</p>
-                <div class="pub-stats" style="margin-top:24px;">
+                <div class="pub-stats" style="margin-top:24px; display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
                     <div class="pub-stats-item">
                         <span class="stat-number"><?php echo $total_images; ?></span>
                         <span class="stat-label">Photos</span>
                     </div>
+                    <?php if($total_images > 0): ?>
+                    <button class="btn-pub-solid slideshow-trigger" onclick="startSlideshow()">
+                        <i class="fas fa-play" style="margin-right:8px;"></i> Play Slideshow
+                    </button>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -93,21 +60,20 @@
 
         <?php if($total_images > 0): ?>
         <div class="gallery-grid" id="galleryGrid">
-            <?php foreach($images as $img): ?>
-            <div class="gallery-card" data-image-id="<?php echo $img->id; ?>">
+            <?php foreach($images as $index => $img): ?>
+            <div class="gallery-card" data-index="<?php echo $index; ?>" onclick="openLightboxByIndex(<?php echo $index; ?>)">
                 <div class="gallery-card-img">
                     <img src="<?php echo htmlentities($img->image_path); ?>" 
                          alt="<?php echo htmlentities($img->hostel_name); ?>"
                          loading="lazy"
-                         onerror="this.src='assets/images/hostel-placeholder.jpg'"
-                         onclick="openLightbox(this.src, '<?php echo htmlentities(addslashes($img->hostel_name)); ?>')">
+                         onerror="this.src='assets/images/hostel-placeholder.jpg'">
                 </div>
                 <div class="gallery-card-overlay">
                     <div class="gallery-card-info">
                         <h5><?php echo htmlentities($img->hostel_name); ?></h5>
                         <p><i class="fas fa-map-marker-alt"></i> <?php echo htmlentities($img->hostel_city); ?></p>
                     </div>
-                    <div class="gallery-card-actions">
+                    <div class="gallery-card-actions" onclick="event.stopPropagation()">
                         <a href="hostel-details.php?id=<?php echo $img->hostel_id; ?>" class="gallery-btn gallery-btn-view" title="View Hostel">
                             <i class="fas fa-eye"></i> View
                         </a>
@@ -136,66 +102,34 @@
 
     <!-- ── Lightbox ── -->
     <div class="gallery-lightbox" id="galleryLightbox" onclick="closeLightbox(event)">
-        <button class="lightbox-close" onclick="closeLightbox(event)"><i class="fas fa-times"></i></button>
+        <button class="lightbox-close" onclick="closeLightbox(event)" title="Close (Esc)"><i class="fas fa-times"></i></button>
+        
+        <button class="lightbox-nav lightbox-prev" onclick="prevImage(event)" title="Previous"><i class="fas fa-chevron-left"></i></button>
+        <button class="lightbox-nav lightbox-next" onclick="nextImage(event)" title="Next"><i class="fas fa-chevron-right"></i></button>
+
         <div class="lightbox-content">
             <img id="lightboxImg" src="" alt="">
-            <p class="lightbox-caption" id="lightboxCaption"></p>
+            <div class="lightbox-info">
+                <p class="lightbox-caption" id="lightboxCaption"></p>
+                <div class="lightbox-meta">
+                    <span id="lightboxCounter">1 of 1</span>
+                    <button id="slideshowToggle" onclick="toggleSlideshow(event)" title="Play/Pause Slideshow">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- ── Footer ── -->
-    <footer class="pub-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="pub-footer-brand">
-                        <img src="assets/images/big/icon.png" alt="HostelHub">
-                        <span>HostelHub</span>
-                    </div>
-                    <p class="pub-footer-desc">
-                        Your trusted platform for finding quality hostel accommodations. We connect tenants with verified property owners across Kenya.
-                    </p>
-                    <div class="pub-footer-social">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5>Quick Links</h5>
-                    <ul class="pub-footer-links">
-                        <li><a href="index.php">Browse Properties</a></li>
-                        <li><a href="gallery.php">Photo Gallery</a></li>
-                        <li><a href="about.php">About Us</a></li>
-                        <li><a href="contact.php">Contact</a></li>
-                        <li><a href="login.php">Login</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>For Property Owners</h5>
-                    <ul class="pub-footer-links">
-                        <li><a href="admin/index.php">Landlord Login</a></li>
-                        <li><a href="client-registration.php">Register Account</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>Legal</h5>
-                    <ul class="pub-footer-links">
-                        <li><a href="privacy.php">Privacy Policy</a></li>
-                        <li><a href="contact.php">Support</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="pub-footer-bottom">
-                &copy; <?php echo date('Y'); ?> HostelHub. All rights reserved.
-            </div>
-        </div>
-    </footer>
+<?php include('includes/public-footer.php'); ?>
 
-    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
+        // Gallery Data for Slideshow
+        const galleryImages = <?php echo json_encode($images); ?>;
+        let currentIndex = 0;
+        let slideshowInterval = null;
+        const slideshowDelay = 4000;
+
         // Navbar scroll effect
         window.addEventListener('scroll', function() {
             const nav = document.getElementById('pubNav');
@@ -249,17 +183,93 @@
             });
         }
 
-        // Lightbox
+        // --- Lightbox & Slideshow Logic ---
+
         function openLightbox(src, caption) {
-            document.getElementById('lightboxImg').src = src;
-            document.getElementById('lightboxCaption').textContent = caption;
+            // Stop any running slideshow
+            pauseSlideshow();
+            
+            // Find current index based on src
+            // Extract filename to be safer with paths
+            const getFilename = (path) => path.split('/').pop().split('\\').pop();
+            const targetFile = getFilename(src);
+            
+            currentIndex = galleryImages.findIndex(img => getFilename(img.image_path) === targetFile);
+            if (currentIndex === -1) currentIndex = 0;
+
+            updateLightboxUI();
             document.getElementById('galleryLightbox').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
+        function openLightboxByIndex(index) {
+            if (index < 0) index = galleryImages.length - 1;
+            if (index >= galleryImages.length) index = 0;
+            currentIndex = index;
+            updateLightboxUI();
+        }
+
+        function updateLightboxUI() {
+            const img = galleryImages[currentIndex];
+            const lbImg = document.getElementById('lightboxImg');
+            
+            // Add fade effect
+            lbImg.style.opacity = '0';
+            setTimeout(() => {
+                lbImg.src = img.image_path;
+                document.getElementById('lightboxCaption').textContent = img.hostel_name;
+                document.getElementById('lightboxCounter').textContent = (currentIndex + 1) + ' of ' + galleryImages.length;
+                lbImg.style.opacity = '1';
+            }, 50);
+        }
+
+        function nextImage(e) {
+            if (e) e.stopPropagation();
+            openLightboxByIndex(currentIndex + 1);
+        }
+
+        function prevImage(e) {
+            if (e) e.stopPropagation();
+            openLightboxByIndex(currentIndex - 1);
+        }
+
+        function startSlideshow() {
+            currentIndex = 0;
+            updateLightboxUI();
+            document.getElementById('galleryLightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            playSlideshow();
+        }
+
+        function playSlideshow() {
+            if (slideshowInterval) clearInterval(slideshowInterval);
+            document.getElementById('slideshowToggle').innerHTML = '<i class="fas fa-pause"></i>';
+            slideshowInterval = setInterval(() => {
+                nextImage();
+            }, slideshowDelay);
+        }
+
+        function pauseSlideshow() {
+            if (slideshowInterval) {
+                clearInterval(slideshowInterval);
+                slideshowInterval = null;
+                document.getElementById('slideshowToggle').innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+
+        function toggleSlideshow(e) {
+            if (e) e.stopPropagation();
+            if (slideshowInterval) {
+                pauseSlideshow();
+            } else {
+                playSlideshow();
+            }
+        }
+
         function closeLightbox(e) {
-            if (e.target === document.getElementById('galleryLightbox') || 
+            if (e === 'force' || e.target === document.getElementById('galleryLightbox') || 
                 e.target.closest('.lightbox-close')) {
+                pauseSlideshow();
                 document.getElementById('galleryLightbox').classList.remove('active');
                 document.body.style.overflow = '';
             }
@@ -267,8 +277,14 @@
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                document.getElementById('galleryLightbox').classList.remove('active');
-                document.body.style.overflow = '';
+                closeLightbox('force');
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
+            } else if (e.key === 'ArrowLeft') {
+                prevImage();
+            } else if (e.key === ' ') { // Spacebar to play/pause
+                e.preventDefault();
+                toggleSlideshow();
             }
         });
     </script>

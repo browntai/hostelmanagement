@@ -155,7 +155,7 @@ if(isset($_GET['available'])) {
                                                 echo "<td>".htmlentities($row['tenant_name'])."</td>";
                                                 echo "<td><span style='".$badgeStyle." padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:600;'>".$badgeLabel."</span></td>";
                                                 echo "<td class='text-center'>
-                                                        <a href='hostel-details-admin.php?id=".$row['id']."' class='btn btn-sm btn-outline-info mr-1' title='View Details'><i data-feather='eye'></i></a>
+                                                        <a href='hostel-details.php?id=".$row['id']."' class='btn btn-sm btn-outline-info mr-1' title='View Details'><i data-feather='eye'></i></a>
                                                         <a href='super_impersonate.php?tenant_id=".$row['tenant_id']."' class='btn btn-sm btn-outline-secondary mr-1' title='Manage as Tenant'><i data-feather='user'></i></a>";
                                                 if($row['status'] == 'approved') {
                                                     echo "<a href='manage-approvals.php?suspend=".$row['id']."' class='btn btn-sm btn-outline-warning mr-1' title='Suspend' onclick=\"return confirm('Suspend this hostel?')\"><i data-feather='slash'></i></a>";
@@ -223,7 +223,7 @@ if(isset($_GET['available'])) {
                                                 echo "<td class='text-center'>
                                                         <a href='manage-approvals.php?approve=".$row['id']."' class='btn btn-sm btn-success mr-1' onclick=\"return confirm('Approve this hostel?')\"><i data-feather='check'></i> Approve</a>
                                                         <a href='manage-approvals.php?reject=".$row['id']."' class='btn btn-sm btn-danger mr-1' onclick=\"return confirm('Reject this hostel?')\"><i data-feather='x'></i> Reject</a>
-                                                        <a href='hostel-details-admin.php?id=".$row['id']."' class='btn btn-sm btn-outline-info mr-1' title='View Details'><i data-feather='eye'></i></a>
+                                                        <a href='hostel-details.php?id=".$row['id']."' class='btn btn-sm btn-outline-info mr-1' title='View Details'><i data-feather='eye'></i></a>
                                                         <a href='super_impersonate.php?tenant_id=".$row['tenant_id']."' class='btn btn-sm btn-outline-secondary' title='Manage as Tenant'><i data-feather='user'></i></a>
                                                       </td>";
                                                 echo "</tr>";

@@ -2,8 +2,15 @@
     include_once '../includes/dbconn.php';
     include_once '../includes/tenant_manager.php';
     $tm = new TenantManager($mysqli);
-    $sql = "SELECT id FROM bookings WHERE booking_status = 'approved'";
-    $sql .= " AND " . $tm->getTenantWhereClause(false); // Pass false because we added WHERE already
+    $tenantCondition = trim($tm->getTenantWhereClause(false));
+    $sql = "SELECT COUNT(DISTINCT id) as occupied FROM rooms WHERE (status = 'booked' OR (room_no, hostel_id) IN (SELECT roomno, hostel_id FROM bookings WHERE booking_status IN ('approved', 'pending')))";
+    if (!empty($tenantCondition)) {
+        $sql .= " AND " . $tenantCondition;
+    }
     $query = $mysqli->query($sql);
-    echo "$query->num_rows";
+    if ($query && $row = $query->fetch_assoc()) {
+        echo $row['occupied'] ? $row['occupied'] : "0";
+    } else {
+        echo "0";
+    }
 ?>

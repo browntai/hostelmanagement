@@ -49,52 +49,12 @@
     $stat_tenants = $mysqli->query("SELECT COUNT(*) as c FROM users WHERE role='client'")->fetch_object()->c;
 ?>
 
-<!DOCTYPE html>
-<html dir="ltr" lang="en">
+<?php 
+    $page_title = "HostelHub — Find Your Perfect Accommodation";
+    include('includes/public-header.php'); 
+?>
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Find and book premium hostel accommodations across Kenya. Browse verified properties with real photos, reviews, and instant booking.">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
-    <title>HostelHub — Find Your Perfect Accommodation</title>
-    <link href="dist/css/style.min.css" rel="stylesheet">
-    <link href="assets/css/public-pages.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-
-<body class="pub-page">
-
-    <!-- ── Navigation ── -->
-    <nav class="pub-navbar" id="pubNav">
-        <div class="container">
-            <a class="pub-nav-brand" href="index.php">
-                <img src="assets/images/big/icon.png" alt="HostelHub">
-                <span>HostelHub</span>
-            </a>
-
-            <button class="pub-nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('show')">
-                <i class="fas fa-bars"></i>
-            </button>
-
-            <ul class="pub-nav-links" id="navLinks">
-                <li><a href="index.php" class="active"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="gallery.php"><i class="fas fa-images"></i> Gallery</a></li>
-                <li><a href="about.php"><i class="fas fa-info-circle"></i> About</a></li>
-                <li><a href="contact.php"><i class="fas fa-envelope"></i> Contact</a></li>
-            </ul>
-
-            <div class="pub-nav-actions">
-                <?php if(isset($_SESSION['login'])): ?>
-                    <a href="client/dashboard.php" class="btn-pub-solid"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <?php else: ?>
-                    <a href="login.php" class="btn-pub-outline">Login</a>
-                    <a href="client-registration.php" class="btn-pub-solid">Register</a>
-                <?php endif; ?>
-            </div>
-        </div>
-    </nav>
+    <?php include('includes/public-nav.php'); ?>
 
     <!-- ══════════════════════════════════════════════════════════
          HERO BANNER
@@ -238,6 +198,11 @@
                                 <!-- Badges -->
                                 <span class="property-badge" style="left:14px;">New</span>
                                 <span class="rooms-badge"><?php echo $available_rooms; ?> rooms</span>
+                                <div class="quick-view-overlay">
+                                    <button class="btn-quick-view" onclick="openQuickView(<?php echo $hostel->id; ?>)">
+                                        <i class="fas fa-eye mr-1"></i> Quick View
+                                    </button>
+                                </div>
                             </div>
 
                             <!-- Card Body -->
@@ -367,67 +332,48 @@
         </div>
     </section>
 
-    <!-- ── Footer ── -->
-    <footer class="pub-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="pub-footer-brand">
-                        <img src="assets/images/big/icon.png" alt="HostelHub">
-                        <span>HostelHub</span>
+<?php include('includes/public-footer.php'); ?>
+
+    <!-- Quick View Modal -->
+    <div class="modal fade" id="quickViewModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position:absolute; right:15px; top:10px; z-index:100; font-size:2rem; color:var(--pub-navy); cursor:pointer; background:none; border:none;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div id="quickViewContent">
+                        <!-- Content loaded via AJAX -->
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
                     </div>
-                    <p class="pub-footer-desc">
-                        Your trusted platform for finding quality hostel accommodations. We connect tenants with verified property owners across Kenya.
-                    </p>
-                    <div class="pub-footer-social">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
                 </div>
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5>Quick Links</h5>
-                    <ul class="pub-footer-links">
-                        <li><a href="index.php">Browse Properties</a></li>
-                        <li><a href="about.php">About Us</a></li>
-                        <li><a href="contact.php">Contact</a></li>
-                        <li><a href="login.php">Login</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>For Property Owners</h5>
-                    <ul class="pub-footer-links">
-                        <li><a href="admin/index.php">Landlord Login</a></li>
-                        <li><a href="client-registration.php">Register Account</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5>Legal</h5>
-                    <ul class="pub-footer-links">
-                        <li><a href="privacy.php">Privacy Policy</a></li>
-                        <li><a href="contact.php">Support</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="pub-footer-bottom">
-                &copy; <?php echo date('Y'); ?> HostelHub. All rights reserved.
             </div>
         </div>
-    </footer>
+    </div>
 
-    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const nav = document.getElementById('pubNav');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
+        function openQuickView(id) {
+            $('#quickViewModal').modal('show');
+            $('#quickViewContent').html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></div>');
+            
+            $.ajax({
+                url: 'includes/quickview-ajax.php',
+                type: 'GET',
+                data: { id: id },
+                success: function(response) {
+                    $('#quickViewContent').html(response);
+                    // Re-initialize carousel if needed
+                    $('.carousel').carousel();
+                },
+                error: function() {
+                    $('#quickViewContent').html('<div class="alert alert-danger m-3">Error loading details. Please try again.</div>');
+                }
+            });
+        }
 
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

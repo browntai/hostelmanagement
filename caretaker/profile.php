@@ -9,6 +9,7 @@
     if(isset($_POST['update'])){
         if(isset($_POST['emailid'])){
             $email = $_POST['emailid'];
+            $contactno = $_POST['contact'];
             $profile_pic = null;
             
             if(isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0){
@@ -26,14 +27,14 @@
             }
 
             if($profile_pic) {
-                $query="UPDATE users set email=?, profile_pic=? where id=?";
+                $query="UPDATE users set email=?, contact_no=?, profile_pic=? where id=?";
                 $stmt = $mysqli->prepare($query);
-                $stmt->bind_param('ssi', $email, $profile_pic, $aid);
+                $stmt->bind_param('sssi', $email, $contactno, $profile_pic, $aid);
                 $stmt->execute();
             } else {
-                $query="UPDATE users set email=? where id=?";
+                $query="UPDATE users set email=?, contact_no=? where id=?";
                 $stmt = $mysqli->prepare($query);
-                $stmt->bind_param('si', $email, $aid);
+                $stmt->bind_param('ssi', $email, $contactno, $aid);
                 $stmt->execute();
             }
             
@@ -127,6 +128,10 @@
                                         <div class="col-md-6 mb-4">
                                             <label class="text-muted font-weight-ExtraBold small text-uppercase mb-2 d-block" style="letter-spacing: 0.5px;">Email Address</label>
                                             <input type="email" class="form-control border shadow-none" name="emailid" value="<?php echo htmlentities($row->email); ?>" required style="font-weight: 500;">
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label class="text-muted font-weight-ExtraBold small text-uppercase mb-2 d-block" style="letter-spacing: 0.5px;">Contact Number</label>
+                                            <input type="text" class="form-control border shadow-none" name="contact" value="<?php echo htmlentities($row->contact_no); ?>" required style="font-weight: 500;">
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label class="text-muted font-weight-ExtraBold small text-uppercase mb-2 d-block" style="letter-spacing: 0.5px;">Access Role</label>

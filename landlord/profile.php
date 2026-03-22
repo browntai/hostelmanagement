@@ -7,6 +7,7 @@
     if(isset($_POST['update'])){
         if(isset($_POST['emailid'])){
             $email=$_POST['emailid'];
+            $contactno=$_POST['contact'];
             $aid=$_SESSION['id'];
             
             $profile_pic = null;
@@ -30,15 +31,15 @@
 
             if($profile_pic) {
                 // Update with picture
-                $query="UPDATE users set email=?, profile_pic=? where id=?";
+                $query="UPDATE users set email=?, contact_no=?, profile_pic=? where id=?";
                 $stmt = $mysqli->prepare($query);
-                $rc=$stmt->bind_param('ssi',$email, $profile_pic, $aid);
+                $rc=$stmt->bind_param('sssi',$email, $contactno, $profile_pic, $aid);
                 $stmt->execute();
             } else {
                 // Update without picture
-                $query="UPDATE users set email=? where id=?";
+                $query="UPDATE users set email=?, contact_no=? where id=?";
                 $stmt = $mysqli->prepare($query);
-                $rc=$stmt->bind_param('si',$email,$aid);
+                $rc=$stmt->bind_param('ssi',$email, $contactno, $aid);
                 $stmt->execute();
             }
             
@@ -220,6 +221,10 @@
                                         <div class="col-md-6 mb-4">
                                             <label class="text-muted font-weight-medium small text-uppercase mb-2 d-block"><i data-feather="mail" class="feather-xs mr-1 text-primary"></i> Email Address</label>
                                             <input type="email" class="form-control" name="emailid" id="emailid" value="<?php echo htmlentities($row->email); ?>" required>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label class="text-muted font-weight-medium small text-uppercase mb-2 d-block"><i data-feather="phone" class="feather-xs mr-1 text-primary"></i> Contact Number</label>
+                                            <input type="text" class="form-control" name="contact" id="contact" value="<?php echo htmlentities($row->contact_no); ?>" required>
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label class="text-muted font-weight-medium small text-uppercase mb-2 d-block"><i data-feather="calendar" class="feather-xs mr-1 text-primary"></i> Onboarded On</label>

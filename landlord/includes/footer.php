@@ -125,4 +125,59 @@ function toggleIndividualSelect(val) {
         }
     })();
 </script>
+<!-- Profile Completion Reminder Modal -->
+<?php if(isset($_SESSION['role']) && $_SESSION['role'] == 'landlord' && (!isset($_SESSION['is_profile_complete']) || !$_SESSION['is_profile_complete'])): ?>
+<div class="modal fade" id="profileReminderModal" tabindex="-1" role="dialog" aria-labelledby="profileReminderModalLabel" aria-hidden="true" data-backdrop="static" style="z-index: 10000;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="modal-body p-5 text-center">
+                <div class="mb-4">
+                    <div class="display-4 text-warning mb-3">🚀</div>
+                    <h3 class="font-weight-bold text-dark">Complete Your Profile!</h3>
+                    <p class="text-muted">Hi <strong><?php echo $_SESSION['full_name'] ?? 'Landlord'; ?></strong>, you're almost there! To build trust with potential tenants, please finish setting up your profile with a <strong>profile photo</strong> and <strong>contact information</strong>.</p>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                    <a href="profile.php" class="btn btn-primary btn-lg font-weight-bold shadow-sm mb-3" style="border-radius: 12px;">
+                        <i class="fas fa-user-edit mr-2"></i> Update Profile Now
+                    </a>
+                    <button type="button" class="btn btn-link text-muted font-weight-medium" data-dismiss="modal">
+                        Remind Me in 10 Minutes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var jqCheck = setInterval(function() {
+            if (window.jQuery) {
+                clearInterval(jqCheck);
+                
+                const REMINDER_INTERVAL = 10 * 60 * 1000; // 10 minutes in ms
+                const MODAL_ID = '#profileReminderModal';
+                
+                function checkProfileReminder() {
+                    const userId = '<?php echo $_SESSION['id']; ?>';
+                    const storageKey = 'profile_reminder_time_' + userId;
+                    const lastShown = localStorage.getItem(storageKey);
+                    const now = Date.now();
+                    
+                    if (!lastShown || (now - lastShown >= REMINDER_INTERVAL)) {
+                        $(MODAL_ID).modal('show');
+                        localStorage.setItem(storageKey, now);
+                    }
+                }
+
+                // Delay initial check slightly to allow page load
+                setTimeout(checkProfileReminder, 2000);
+                
+                // Re-check every 30 seconds
+                setInterval(checkProfileReminder, 30000);
+            }
+        }, 100);
+    });
+</script>
+<?php endif; ?>
 <?php endif; ?>
