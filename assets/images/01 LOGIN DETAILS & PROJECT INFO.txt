@@ -9,7 +9,7 @@
 
 **Admin Login Details**
 
-Email: tracy@mail.com
+Email: tracy@gmail.com
 password: [admin123]
 role: admin
 

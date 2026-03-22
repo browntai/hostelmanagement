@@ -41,7 +41,6 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, $mockPayload);
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $res = curl_exec($ch);
-curl_close($ch);
 
 // Redirect user back to dashboard or payments
 session_start();

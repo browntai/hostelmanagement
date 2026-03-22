@@ -34,7 +34,6 @@ function getMpesaAccessToken() {
     
     $result = curl_exec($curl);
     $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    curl_close($curl);
     
     if ($status == 200) {
         $json = json_decode($result);
@@ -109,7 +108,6 @@ function initiateStkPush($phone, $amount, $reference, $description) {
     
     $curl_response = curl_exec($curl);
     $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    curl_close($curl);
     
     if ($status == 200) {
         $res = json_decode($curl_response, true);
